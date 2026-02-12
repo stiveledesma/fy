@@ -76,65 +76,121 @@
 
         <div class="right">
           <!-- CORAZÓN GRANDE (responsive) -->
-          <svg id="heartSvg" viewBox="0 0 520 520" role="img" aria-label="Corazón">
-            <defs>
-              <radialGradient id="heartGrad" cx="50%" cy="38%" r="70%">
-                <stop offset="0%" stop-color="#ffd1df" stop-opacity="0.98"/>
-                <stop offset="45%" stop-color="#ff4d8d" stop-opacity="0.90"/>
-                <stop offset="100%" stop-color="#c0184a" stop-opacity="0.92"/>
-              </radialGradient>
+       <svg id="heartSvg" viewBox="0 0 520 520" role="img" aria-label="Corazón premium">
+  <defs>
+    <!-- Gradiente principal (volumen) -->
+    <radialGradient id="gMain" cx="38%" cy="28%" r="78%">
+      <stop offset="0%"  stop-color="#ffe2ea"/>
+      <stop offset="28%" stop-color="#ff79aa"/>
+      <stop offset="62%" stop-color="#ff2f7b"/>
+      <stop offset="100%" stop-color="#b70b3f"/>
+    </radialGradient>
 
-              <filter id="heartShadow" x="-40%" y="-40%" width="180%" height="180%">
-                <feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#000" flood-opacity="0.18"/>
-              </filter>
+    <!-- Sombra interna suave -->
+    <radialGradient id="gInner" cx="55%" cy="48%" r="72%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.00"/>
+      <stop offset="70%" stop-color="#000" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.20"/>
+    </radialGradient>
 
-              <filter id="heartGlow" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="3" result="b"/>
-                <feMerge>
-                  <feMergeNode in="b"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
+    <!-- Highlight “gel” -->
+    <linearGradient id="gShine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.90"/>
+      <stop offset="55%" stop-color="#fff" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0.00"/>
+    </linearGradient>
 
-            <!-- Sombra suave (para “profundidad”) -->
-            <ellipse cx="280" cy="420" rx="170" ry="40" fill="rgba(0,0,0,.10)"/>
+    <!-- Glow externo -->
+    <filter id="fGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1 0 0 0 0
+                0 0.6 0 0 0
+                0 0 0.8 0 0
+                0 0 0 0.55 0" result="pink"/>
+      <feMerge>
+        <feMergeNode in="pink"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
 
-            <!-- Corazón grande -->
-            <g filter="url(#heartShadow)">
-              <path id="heartPath"
-                d="M260 150
-                   C230 95 160 95 160 160
-                   C160 220 225 245 260 290
-                   C295 245 360 220 360 160
-                   C360 95 290 95 260 150Z"
-                fill="url(#heartGrad)" filter="url(#heartGlow)"/>
-            </g>
+    <!-- Sombra suave -->
+    <filter id="fShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#000" flood-opacity="0.20"/>
+    </filter>
 
-            <!-- “pecas/rositas” decorativas -->
-            <g id="dots" opacity="0.92">
-              <circle cx="210" cy="160" r="7" fill="#ff2a6d"/>
-              <circle cx="238" cy="150" r="6" fill="#c0184a"/>
-              <circle cx="280" cy="150" r="6" fill="#ff2a6d"/>
-              <circle cx="310" cy="162" r="7" fill="#c0184a"/>
+    <!-- “Grano” sutil para que se vea premium -->
+    <filter id="fGrain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 0.7
+                0 0 0 0 0.7
+                0 0 0 0 0.7
+                0 0 0 0.06 0" result="grain"/>
+      <feBlend in="SourceGraphic" in2="grain" mode="soft-light"/>
+    </filter>
 
-              <circle cx="195" cy="190" r="6" fill="#ff4d8d"/>
-              <circle cx="225" cy="190" r="8" fill="#c0184a"/>
-              <circle cx="260" cy="190" r="6" fill="#ff2a6d"/>
-              <circle cx="295" cy="190" r="8" fill="#ff4d8d"/>
-              <circle cx="325" cy="190" r="6" fill="#c0184a"/>
+    <!-- Corazón base (misma forma para todo) -->
+    <path id="heartShape"
+      d="M260 148
+         C226 92 152 95 152 168
+         C152 242 232 270 260 318
+         C288 270 368 242 368 168
+         C368 95 294 92 260 148Z"/>
 
-              <circle cx="210" cy="222" r="7" fill="#c0184a"/>
-              <circle cx="240" cy="230" r="6" fill="#ff2a6d"/>
-              <circle cx="260" cy="235" r="9" fill="#ff4d8d"/>
-              <circle cx="285" cy="230" r="6" fill="#ff2a6d"/>
-              <circle cx="310" cy="222" r="7" fill="#c0184a"/>
+    <!-- Clip para pintar adentro del corazón -->
+    <clipPath id="clipHeart">
+      <use href="#heartShape"/>
+    </clipPath>
+  </defs>
 
-              <circle cx="240" cy="260" r="6" fill="#ff2a6d"/>
-              <circle cx="260" cy="268" r="7" fill="#c0184a"/>
-              <circle cx="282" cy="260" r="6" fill="#ff4d8d"/>
-            </g>
-          </svg>
+  <!-- Sombra en el suelo (flota bonito) -->
+  <ellipse cx="280" cy="422" rx="175" ry="42" fill="rgba(0,0,0,.10)"/>
+
+  <!-- Glow atrás -->
+  <g opacity="0.75" filter="url(#fGlow)">
+    <use href="#heartShape" fill="#ff4d8d"/>
+  </g>
+
+  <!-- Corazón principal -->
+  <g filter="url(#fShadow)">
+    <use href="#heartShape" fill="url(#gMain)" filter="url(#fGrain)"/>
+
+    <!-- sombra interna para volumen -->
+    <g clip-path="url(#clipHeart)" opacity="1">
+      <use href="#heartShape" fill="url(#gInner)"/>
+    </g>
+
+    <!-- borde sutil (define mejor la forma) -->
+    <use href="#heartShape" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2"/>
+
+    <!-- brillo tipo gel -->
+    <g clip-path="url(#clipHeart)" opacity="0.95">
+      <path
+        d="M205 150
+           C210 120 242 105 270 112
+           C245 132 240 162 250 195
+           C220 190 200 176 205 150Z"
+        fill="url(#gShine)"/>
+      <path
+        d="M290 135
+           C314 120 340 126 350 148
+           C332 148 315 160 305 176
+           C294 164 284 148 290 135Z"
+        fill="rgba(255,255,255,.18)"/>
+    </g>
+
+    <!-- destellos discretos -->
+    <g clip-path="url(#clipHeart)" opacity="0.55">
+      <circle cx="210" cy="205" r="3.2" fill="#fff"/>
+      <circle cx="230" cy="225" r="2.2" fill="#fff"/>
+      <circle cx="316" cy="205" r="2.8" fill="#fff"/>
+      <circle cx="292" cy="238" r="2.0" fill="#fff"/>
+    </g>
+  </g>
+</svg>
+
+
         </div>
       </div>
 
@@ -199,5 +255,6 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
