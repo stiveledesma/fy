@@ -44,13 +44,11 @@
     <section class="card">
       <div class="topbar">
         <div class="music">
-          <button class="icon-btn" id="musicBtn" aria-label="Reproducir o pausar música">
-            ▶︎
-          </button>
+          <button class="icon-btn" id="musicBtn" aria-label="Reproducir o pausar música">▶︎</button>
           <span class="music-label" id="musicLabel">Música</span>
         </div>
 
-        <!-- Mini galería (sube tus fotos a /assets/) -->
+        <!-- Mini galería: sube tus fotos a /assets/foto1.jpg y /assets/foto2.jpg -->
         <div class="mini-gallery" aria-label="Fotos">
           <img class="mini" src="assets/foto1.jpg" alt="Foto 1" loading="lazy" />
           <img class="mini" src="assets/foto2.jpg" alt="Foto 2" loading="lazy" />
@@ -93,7 +91,7 @@
     <canvas id="fall" class="fall"></canvas>
     <canvas id="spark" class="spark"></canvas>
 
-    <!-- Audio (sube tu mp3 a /assets/music.mp3) -->
+    <!-- Audio: sube tu mp3 a /assets/music.mp3 -->
     <audio id="bgMusic" preload="auto" loop>
       <source src="assets/music.mp3" type="audio/mpeg" />
     </audio>
@@ -103,6 +101,43 @@
       <div class="modal-backdrop" id="modalBackdrop"></div>
       <img class="modal-img" id="modalImg" alt="Foto" />
       <button class="modal-close" id="modalClose" aria-label="Cerrar">×</button>
+    </div>
+
+    <!-- Botón final (COFRE) -->
+    <button class="final-btn" id="finalBtn" hidden aria-label="Abrir sorpresa final">
+      <span class="final-icon">🎁</span>
+      <span class="final-text">Cofre</span>
+    </button>
+
+    <!-- Modal final: ¿Quieres ser mi San Valentín? -->
+    <div class="final-modal" id="finalModal" hidden>
+      <div class="final-backdrop" id="finalBackdrop"></div>
+
+      <div class="final-card" role="dialog" aria-modal="true" aria-label="Sorpresa final">
+        <div class="final-top">
+          <div class="lock">
+            <div class="lock-body" id="chestBody">🧰</div>
+            <button class="key-btn" id="keyBtn" aria-label="Usar la llave">
+              <span class="key">🗝️</span>
+              <span class="key-heart">❤</span>
+            </button>
+          </div>
+
+          <h2 class="final-title">Una última pregunta…</h2>
+          <p class="final-sub">Toca la llave para abrir 💌</p>
+        </div>
+
+        <div class="final-question" id="finalQuestion" hidden>
+          <h3>¿Quieres ser mi San Valentín? ❤️</h3>
+          <div class="final-actions">
+            <button class="final-yes" id="finalYes">Sí</button>
+            <button class="final-no" id="finalNo">No</button>
+          </div>
+          <p class="final-note" id="finalNote"></p>
+        </div>
+
+        <button class="final-close" id="finalClose" aria-label="Cerrar">×</button>
+      </div>
     </div>
   </main>
 

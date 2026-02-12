@@ -499,26 +499,41 @@ function drawRoseTree(){
   loop();
 }
 
-// ====== Fotos: modal
+// ====== Fotos: modal (robusto)
 const modal = document.getElementById("modal");
 const modalImg = document.getElementById("modalImg");
 const modalClose = document.getElementById("modalClose");
 const modalBackdrop = document.getElementById("modalBackdrop");
 
-document.querySelectorAll(".mini").forEach(img => {
-  img.addEventListener("error", () => {
-    img.style.display = "none";
-  });
-  img.addEventListener("click", () => {
-    modalImg.src = img.src;
-    modal.hidden = false;
-  });
-});
 function closeModal(){
   modal.hidden = true;
-  modalImg.src = "";
+  modalImg.removeAttribute("src");
 }
+
 modalClose.addEventListener("click", closeModal);
+modalBackdrop.addEventListener("click", closeModal);
+
+// Si el modal intenta cargar algo roto, cerramos
+modalImg.addEventListener("error", closeModal);
+
+document.querySelectorAll(".mini").forEach(img => {
+  img.addEventListener("error", () => {
+    img.dataset.missing = "1";
+    img.style.display = "none";
+  });
+
+  img.addEventListener("click", () => {
+    // Evita abrir si aún no está cargada
+    if (img.dataset.missing === "1") return;
+
+    // Fuerza carga correcta
+    modalImg.src = img.src;
+    modal.hidden = false;
+
+    // si por cache tarda, igual se verá cuando termine de cargar
+  });
+});
+
 modalBackdrop.addEventListener("click", closeModal);
 
 // ====== SORPRESA FINAL: COFRE + LLAVE + PREGUNTA
