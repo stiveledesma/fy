@@ -283,43 +283,51 @@ function drawRoseTree(){
   const lerp = (a,b,t)=> a + (b-a)*t;
 
   const palette = {
-    trunk1: "#6b3f25",
+    trunk1: "#5b341f",
     trunk2: "#8a5635",
     shadow: "rgba(0,0,0,.10)",
     glow: "rgba(255,90,140,.10)",
-    rose1: 350,
-    rose2: 10
+    roseA: 350,
+    roseB: 10
   };
 
   const petals = [];
   const floaters = [];
 
+  // árbol base con copa más amplia
   function makeBranch(x1,y1,x2,y2,w,depth){
     const b = { x1,y1,x2,y2,w, children: [] };
     if(depth <= 0) return b;
 
-    const n = depth > 2 ? 2 : 1;
+    // más ramitas arriba
+    const n = depth >= 4 ? 3 : depth >= 2 ? 2 : 1;
+
     for(let i=0;i<n;i++){
-      const t = rand(0.45, 0.8);
+      const t = rand(0.35, 0.82);
       const bx = lerp(x1,x2,t);
       const by = lerp(y1,y2,t);
 
-      const ang = Math.atan2(y2-y1, x2-x1) + rand(-0.9, 0.9);
-      const len = rand(70, 120) * (depth/5);
+      const baseAng = Math.atan2(y2-y1, x2-x1);
+      const spread = depth >= 4 ? 1.15 : 0.95;
+      const ang = baseAng + rand(-spread, spread);
 
-      const ex = bx + Math.cos(ang)*len;
-      const ey = by + Math.sin(ang)*len;
+      const len = rand(85, 150) * (depth/5);
 
-      b.children.push(makeBranch(bx,by, ex,ey, w*rand(0.58,0.75), depth-1));
+      // limita para no irse fuera del canvas
+      const ex = Math.max(W*0.18, Math.min(W*0.92, bx + Math.cos(ang)*len));
+      const ey = Math.max(H*0.08, Math.min(H*0.90, by + Math.sin(ang)*len));
+
+      b.children.push(makeBranch(bx,by, ex,ey, w*rand(0.58,0.78), depth-1));
     }
     return b;
   }
 
+  // tronco más centrado y alto
   const trunk = makeBranch(
-    W*0.55, H*0.88,
-    W*0.52, H*0.38,
-    22,
-    5
+    W*0.55, H*0.90,
+    W*0.53, H*0.32,
+    26,
+    6
   );
 
   function drawBranch(b){
@@ -347,29 +355,37 @@ function drawRoseTree(){
   }
   collectTips(trunk);
 
+  // duplicamos tips para “llenar” la copa
+  const richTips = [];
+  tips.forEach(t => {
+    richTips.push(t);
+    richTips.push({ x: t.x + rand(-28,28), y: t.y + rand(-18,18), w: t.w*rand(0.7,1.0) });
+  });
+
   function drawRose(x,y,scale,phase,hueBase){
+    // glow
     ctx.save();
-    ctx.globalAlpha = 0.20;
+    ctx.globalAlpha = 0.18;
     ctx.fillStyle = palette.glow;
     ctx.beginPath();
-    ctx.arc(x,y, 18*scale, 0, Math.PI*2);
+    ctx.arc(x,y, 20*scale, 0, Math.PI*2);
     ctx.fill();
     ctx.restore();
 
-    const layers = 3;
+    const layers = 4; // + capas
     for(let L=0; L<layers; L++){
-      const petalsCount = 6 + L*2;
-      const s = (5 + L*2) * scale;
-      const hue = hueBase + rand(-10, 10);
-      const light = 58 - L*6;
+      const petalsCount = 8 + L*2;
+      const s = (5 + L*2.1) * scale;
+      const hue = hueBase + rand(-8, 8);
+      const light = 60 - L*7;
 
       ctx.save();
       ctx.globalAlpha = 0.95;
       ctx.fillStyle = `hsl(${hue} 88% ${light}%)`;
 
       for(let i=0;i<petalsCount;i++){
-        const a = (i/petalsCount)*Math.PI*2 + phase*(0.6 + L*0.15);
-        const wobble = Math.sin(phase*1.2 + i)*0.12;
+        const a = (i/petalsCount)*Math.PI*2 + phase*(0.55 + L*0.12);
+        const wobble = Math.sin(phase*1.1 + i)*0.10;
 
         ctx.save();
         ctx.translate(x,y);
@@ -385,78 +401,85 @@ function drawRoseTree(){
       ctx.restore();
     }
 
+    // centro
     ctx.save();
-    ctx.globalAlpha = 0.9;
-    ctx.fillStyle = "rgba(120,40,60,.35)";
+    ctx.globalAlpha = 0.75;
+    ctx.fillStyle = "rgba(110,25,55,.45)";
     ctx.beginPath();
-    ctx.arc(x,y, 3.2*scale, 0, Math.PI*2);
+    ctx.arc(x,y, 3.6*scale, 0, Math.PI*2);
     ctx.fill();
     ctx.restore();
   }
 
   function emitPetal(x,y){
-    const hue = (Math.random() < 0.75) ? rand(palette.rose1, 360) : rand(0, palette.rose2);
+    const hue = (Math.random() < 0.75) ? rand(palette.roseA, 360) : rand(0, palette.roseB);
     petals.push({
       x, y,
-      vx: rand(-0.55, 0.55),
-      vy: rand(0.6, 1.5),
+      vx: rand(-0.65, 0.65),
+      vy: rand(0.75, 1.8),
       rot: rand(0, Math.PI*2),
-      vr: rand(-0.05, 0.05),
-      s: rand(2.8, 5.2),
-      a: rand(0.35, 0.85),
+      vr: rand(-0.06, 0.06),
+      s: rand(3.0, 5.8),
+      a: rand(0.35, 0.90),
       hue
     });
   }
 
   function emitFloater(){
     floaters.push({
-      x: rand(W*0.30, W*0.82),
-      y: rand(H*0.14, H*0.48),
-      vx: rand(-0.2, 0.2),
+      x: rand(W*0.25, W*0.86),
+      y: rand(H*0.10, H*0.50),
+      vx: rand(-0.22, 0.22),
       vy: rand(-0.08, 0.22),
-      life: rand(80, 160),
-      s: rand(1.2, 2.2),
-      a: rand(0.08, 0.20)
+      life: rand(90, 180),
+      s: rand(1.2, 2.4),
+      a: rand(0.08, 0.22)
     });
   }
 
   let tick = 0;
   function loop(){
-    tick += 1;
+    tick++;
     const time = tick/60;
 
     ctx.clearRect(0,0,W,H);
 
+    // sombra suelo
     ctx.save();
     ctx.fillStyle = palette.shadow;
     ctx.beginPath();
-    ctx.ellipse(W*0.56, H*0.86, 150, 34, 0, 0, Math.PI*2);
+    ctx.ellipse(W*0.58, H*0.87, 170, 36, 0, 0, Math.PI*2);
     ctx.fill();
     ctx.restore();
 
+    // tronco/ramas
     drawBranch(trunk);
 
-    for(let i=0;i<tips.length;i++){
-      const tip = tips[i];
-      const bloom = Math.min(1, (time - i*0.04));
+    // flores (más densas)
+    for(let i=0;i<richTips.length;i++){
+      const tip = richTips[i];
+      const bloom = Math.min(1, (time - i*0.02));
       if(bloom <= 0) continue;
 
-      const scale = 0.55 + bloom*0.55 + Math.sin(time*1.4 + i)*0.03;
-      const hue = (i % 2 === 0) ? palette.rose1 : palette.rose2;
+      const scale = 0.45 + bloom*0.62 + Math.sin(time*1.2 + i)*0.03;
+      const hue = (i % 2 === 0) ? palette.roseA : palette.roseB;
 
-      drawRose(tip.x, tip.y, scale, time*1.7 + i*0.2, hue);
+      drawRose(tip.x, tip.y, scale, time*1.6 + i*0.18, hue);
 
-      if(Math.random() < 0.03) emitPetal(tip.x, tip.y);
+      // más pétalos (sin exagerar)
+      if(Math.random() < 0.05) emitPetal(tip.x, tip.y);
     }
 
-    const wind = Math.sin(time*0.8)*0.25;
+    // viento suave
+    const wind = Math.sin(time*0.75)*0.28;
 
+    // pétalos flotando
     for(const p of petals){
-      p.vx += wind*0.015;
+      p.vx += wind*0.016;
       p.x += p.vx;
       p.y += p.vy;
       p.rot += p.vr;
-      p.a *= 0.995;
+      p.a *= 0.994;
 
       ctx.save();
       ctx.globalAlpha = p.a;
@@ -472,17 +495,18 @@ function drawRoseTree(){
       ctx.restore();
     }
     for(let i=petals.length-1;i>=0;i--){
-      if(petals[i].y > H+40 || petals[i].a < 0.05) petals.splice(i,1);
+      if(petals[i].y > H+50 || petals[i].a < 0.05) petals.splice(i,1);
     }
 
-    if(floaters.length < 40 && Math.random() < 0.6) emitFloater();
+    // sparkles sutiles
+    if(floaters.length < 46 && Math.random() < 0.75) emitFloater();
     for(const f of floaters){
       f.x += f.vx;
       f.y += f.vy;
       f.life -= 1;
 
       ctx.save();
-      ctx.globalAlpha = f.a * Math.max(0, f.life/160);
+      ctx.globalAlpha = f.a * Math.max(0, f.life/180);
       ctx.fillStyle = "rgba(255,255,255,1)";
       ctx.beginPath();
       ctx.arc(f.x, f.y, f.s, 0, Math.PI*2);
