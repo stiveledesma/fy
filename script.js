@@ -23,6 +23,7 @@ const musicLabel = document.getElementById("musicLabel");
 
 const psBox = document.getElementById("psBox");
 const psText = document.getElementById("psText");
+const heartSvg = document.getElementById("heartSvg");
 
 let opened = false;
 let musicOn = false;
@@ -243,6 +244,41 @@ function burstSparkles(){
     });
   }
 }
+function heartWowBurst(){
+  // 1) Animación WOW del SVG
+  if(heartSvg){
+    heartSvg.classList.remove("wow");
+    // reflow para reiniciar animación
+    void heartSvg.offsetWidth;
+    heartSvg.classList.add("wow");
+    setTimeout(() => heartSvg.classList.remove("wow"), 1400);
+  }
+
+  // 2) Destellos alrededor del corazón (canvas spark)
+  if(!sparkCtx) setupSpark();
+
+  // buscamos centro del corazón en pantalla
+  const rect = heartSvg?.getBoundingClientRect();
+  const cx = rect ? rect.left + rect.width * 0.55 : window.innerWidth/2;
+  const cy = rect ? rect.top + rect.height * 0.45 : window.innerHeight/2;
+
+  const rand = (a,b)=> a + Math.random()*(b-a);
+
+  for(let i=0;i<110;i++){
+    const ang = rand(0, Math.PI*2);
+    const r = rand(10, rect ? rect.width*0.30 : 140);
+    sparkles.push({
+      x: cx + Math.cos(ang)*r,
+      y: cy + Math.sin(ang)*r,
+      vx: Math.cos(ang)*rand(0.2, 2.2),
+      vy: Math.sin(ang)*rand(0.2, 2.2) - rand(0.2, 1.2),
+      life: rand(24, 70),
+      s: rand(1.4, 3.6),
+      a: rand(0.25, 0.9)
+    });
+  }
+}
+
 
 function startSparkleLoop(){
   if(!sparkCtx) setupSpark();
@@ -335,12 +371,15 @@ keyBtn.addEventListener("click", () => {
 
 finalYes.addEventListener("click", () => {
   finalNote.textContent = "¡¡Siii!! 😍 Prometo hacer de este día algo hermoso contigo.";
-  burstSparkles();
+  heartWowBurst();     // <- WOW del corazón + destellos
+  burstSparkles();     // <- extra sparkles al centro (se ve lindo)
   if(!musicOn) musicBtn.click();
 });
+
 
 finalNo.addEventListener("click", () => {
   finalNote.textContent = "No acepto ese ‘no’ 😌 Intenta otra vez con cariño.";
   finalNo.style.transform = `translate(${(Math.random()*80-40).toFixed(0)}px, ${(Math.random()*50-25).toFixed(0)}px)`;
   setTimeout(()=> finalNo.style.transform = "", 500);
 });
+
