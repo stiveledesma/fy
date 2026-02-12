@@ -245,39 +245,43 @@ function burstSparkles(){
   }
 }
 function heartWowBurst(){
-  // 1) Animación WOW del SVG
-  if(heartSvg){
-    heartSvg.classList.remove("wow");
-    // reflow para reiniciar animación
-    void heartSvg.offsetWidth;
-    heartSvg.classList.add("wow");
-    setTimeout(() => heartSvg.classList.remove("wow"), 1400);
+  // WOW del corazón (100% confiable)
+  if (heartSvg && heartSvg.animate) {
+    heartSvg.animate(
+      [
+        { transform: "translateY(0px) scale(1)" },
+        { transform: "translateY(-10px) scale(1.08)" },
+        { transform: "translateY(0px) scale(0.99)" },
+        { transform: "translateY(-4px) scale(1.03)" }
+      ],
+      { duration: 1100, easing: "cubic-bezier(.2,.9,.2,1)" }
+    );
   }
 
-  // 2) Destellos alrededor del corazón (canvas spark)
+  // Destellos alrededor del corazón (spark canvas)
   if(!sparkCtx) setupSpark();
 
-  // buscamos centro del corazón en pantalla
   const rect = heartSvg?.getBoundingClientRect();
   const cx = rect ? rect.left + rect.width * 0.55 : window.innerWidth/2;
   const cy = rect ? rect.top + rect.height * 0.45 : window.innerHeight/2;
 
   const rand = (a,b)=> a + Math.random()*(b-a);
 
-  for(let i=0;i<110;i++){
+  for(let i=0;i<120;i++){
     const ang = rand(0, Math.PI*2);
-    const r = rand(10, rect ? rect.width*0.30 : 140);
+    const r = rand(10, rect ? rect.width*0.34 : 160);
     sparkles.push({
       x: cx + Math.cos(ang)*r,
       y: cy + Math.sin(ang)*r,
-      vx: Math.cos(ang)*rand(0.2, 2.2),
-      vy: Math.sin(ang)*rand(0.2, 2.2) - rand(0.2, 1.2),
-      life: rand(24, 70),
-      s: rand(1.4, 3.6),
-      a: rand(0.25, 0.9)
+      vx: Math.cos(ang)*rand(0.2, 2.4),
+      vy: Math.sin(ang)*rand(0.2, 2.4) - rand(0.2, 1.3),
+      life: rand(26, 80),
+      s: rand(1.4, 3.8),
+      a: rand(0.25, 0.95)
     });
   }
 }
+
 
 
 function startSparkleLoop(){
@@ -371,15 +375,48 @@ keyBtn.addEventListener("click", () => {
 
 finalYes.addEventListener("click", () => {
   finalNote.textContent = "¡¡Siii!! 😍 Prometo hacer de este día algo hermoso contigo.";
-  heartWowBurst();     // <- WOW del corazón + destellos
-  burstSparkles();     // <- extra sparkles al centro (se ve lindo)
+  heartWowBurst();
   if(!musicOn) musicBtn.click();
 });
 
 
+
+let noCount = 0;
+
 finalNo.addEventListener("click", () => {
-  finalNote.textContent = "No acepto ese ‘no’ 😌 Intenta otra vez con cariño.";
-  finalNo.style.transform = `translate(${(Math.random()*80-40).toFixed(0)}px, ${(Math.random()*50-25).toFixed(0)}px)`;
-  setTimeout(()=> finalNo.style.transform = "", 500);
+  noCount++;
+
+  const frases = [
+    "¿Segura? 🥺",
+    "No acepto ese ‘no’ 😌",
+    "Intenta otra vez, porfa 😳",
+    "Ese botón está tímido… 😂",
+    "¡Ay no! se me escapó 🙈",
+    "Ok… pero te voy a seguir amando 😘"
+  ];
+
+  finalNote.textContent = frases[Math.min(noCount-1, frases.length-1)];
+
+  // Se mueve (sin salirse del modal)
+  const card = document.querySelector(".final-card");
+  const cardRect = card.getBoundingClientRect();
+  const btnRect = finalNo.getBoundingClientRect();
+
+  const maxX = (cardRect.right - 16) - btnRect.width;
+  const minX = (cardRect.left + 16);
+  const maxY = (cardRect.bottom - 16) - btnRect.height;
+  const minY = (cardRect.top + 90);
+
+  const x = Math.floor(Math.random() * (maxX - minX) + minX);
+  const y = Math.floor(Math.random() * (maxY - minY) + minY);
+
+  finalNo.style.position = "fixed";
+  finalNo.style.left = x + "px";
+  finalNo.style.top = y + "px";
+
+  // mini sparkles para que sea bonito
+  burstSparkles();
 });
+
+
 
