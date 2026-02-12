@@ -9,7 +9,7 @@
 <body>
   <div class="bg"></div>
 
-  <!-- Intro: carta/sobre -->
+  <!-- Intro carta/sobre -->
   <section class="intro" id="intro">
     <div class="letter-wrap">
       <div class="badge">Para Silvia</div>
@@ -24,10 +24,14 @@
             <span class="seal-heart">❤</span>
             <span class="letter-title">Una carta para ti</span>
           </div>
+
           <p class="letter-text">
-            Toca el sobre para abrirlo ✨
+            Toca el sobre… y luego presiona abrir ✨
           </p>
+
           <button class="btn" id="btnStart">Abrir</button>
+
+          <p class="tiny">Tip: cuando abra, dale ▶︎ para música</p>
         </div>
       </div>
 
@@ -38,6 +42,21 @@
   <!-- Tarjeta principal -->
   <main class="wrap" id="wrap" aria-hidden="true">
     <section class="card">
+      <div class="topbar">
+        <div class="music">
+          <button class="icon-btn" id="musicBtn" aria-label="Reproducir o pausar música">
+            ▶︎
+          </button>
+          <span class="music-label" id="musicLabel">Música</span>
+        </div>
+
+        <!-- Mini galería (sube tus fotos a /assets/) -->
+        <div class="mini-gallery" aria-label="Fotos">
+          <img class="mini" src="assets/foto1.jpg" alt="Foto 1" loading="lazy" />
+          <img class="mini" src="assets/foto2.jpg" alt="Foto 2" loading="lazy" />
+        </div>
+      </div>
+
       <div class="card-inner">
         <div class="left">
           <p class="title">Para el amor de mi vida, <span class="name">Silvia</span>:</p>
@@ -52,9 +71,14 @@
             <p class="big" id="since"></p>
           </div>
 
+          <div class="ps" id="psBox" hidden>
+            <span class="ps-title">P.D.</span>
+            <span class="ps-text" id="psText"></span>
+          </div>
+
           <div class="sign">
             <span>Con cariño,</span>
-            <span class="firm">❤️</span>
+            <span class="firm">stive</span>
           </div>
         </div>
 
@@ -68,6 +92,18 @@
 
     <canvas id="fall" class="fall"></canvas>
     <canvas id="spark" class="spark"></canvas>
+
+    <!-- Audio (sube tu mp3 a /assets/music.mp3) -->
+    <audio id="bgMusic" preload="auto" loop>
+      <source src="assets/music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Modal para ver fotos grandes -->
+    <div class="modal" id="modal" hidden>
+      <div class="modal-backdrop" id="modalBackdrop"></div>
+      <img class="modal-img" id="modalImg" alt="Foto" />
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">×</button>
+    </div>
   </main>
 
   <script src="script.js"></script>
