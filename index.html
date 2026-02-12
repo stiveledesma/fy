@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Para Silvia ❤️</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg"></div>
+
+  <!-- Intro: carta/sobre -->
+  <section class="intro" id="intro">
+    <div class="letter-wrap">
+      <div class="badge">Para Silvia</div>
+
+      <div class="envelope" id="envelope" role="button" aria-label="Abrir carta" tabindex="0">
+        <div class="env-back"></div>
+        <div class="env-front"></div>
+        <div class="env-flap"></div>
+
+        <div class="letter" id="letter">
+          <div class="letter-top">
+            <span class="seal-heart">❤</span>
+            <span class="letter-title">Una carta para ti</span>
+          </div>
+          <p class="letter-text">
+            Toca el sobre para abrirlo ✨
+          </p>
+          <button class="btn" id="btnStart">Abrir</button>
+        </div>
+      </div>
+
+      <p class="subnote">Hecho con amor • 28/12/2019</p>
+    </div>
+  </section>
+
+  <!-- Tarjeta principal -->
+  <main class="wrap" id="wrap" aria-hidden="true">
+    <section class="card">
+      <div class="card-inner">
+        <div class="left">
+          <p class="title">Para el amor de mi vida, <span class="name">Silvia</span>:</p>
+
+          <div class="typebox">
+            <p id="typed" class="typed"></p>
+            <span class="caret" aria-hidden="true"></span>
+          </div>
+
+          <div class="counter">
+            <p class="small">Mi amor por ti comenzó hace…</p>
+            <p class="big" id="since"></p>
+          </div>
+
+          <div class="sign">
+            <span>Con cariño,</span>
+            <span class="firm">❤️</span>
+          </div>
+        </div>
+
+        <div class="right">
+          <canvas id="tree" width="520" height="520"></canvas>
+        </div>
+      </div>
+
+      <div class="floor"></div>
+    </section>
+
+    <canvas id="fall" class="fall"></canvas>
+    <canvas id="spark" class="spark"></canvas>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

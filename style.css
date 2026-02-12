@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;700;800;900&display=swap');
+
+:root{
+  --bg1:#ff2a6d;
+  --bg2:#ff7aa8;
+  --card:#f6e7df;
+  --ink:#2f2420;
+  --muted:#6a4c45;
+  --paper:#fff7f2;
+
+  --env:#ffe1ea;
+  --env2:#ffd1de;
+  --envShadow: rgba(0,0,0,.22);
+  --shadow: 0 18px 60px rgba(0,0,0,.25);
+  --radius: 28px;
+}
+
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  font-family: Nunito, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--ink);
+  min-height:100vh;
+  overflow:hidden;
+}
+
+/* fondo */
+.bg{
+  position:fixed; inset:0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,.40), transparent 35%),
+    radial-gradient(circle at 80% 30%, rgba(255,255,255,.26), transparent 40%),
+    linear-gradient(135deg, var(--bg1), var(--bg2));
+  filter:saturate(1.15);
+}
+.bg::before{
+  content:"";
+  position:absolute; inset:-25%;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(255,255,255,.22) 0 2px, transparent 3px),
+    radial-gradient(circle at 70% 20%, rgba(255,255,255,.18) 0 2px, transparent 3px),
+    radial-gradient(circle at 25% 68%, rgba(255,255,255,.20) 0 2px, transparent 3px),
+    radial-gradient(circle at 85% 80%, rgba(255,255,255,.18) 0 2px, transparent 3px);
+  background-size: 140px 140px;
+  opacity:.65;
+  transform: rotate(-12deg);
+}
+
+/* Intro carta */
+.intro{
+  position:fixed; inset:0;
+  display:grid;
+  place-items:center;
+  z-index:5;
+  padding:24px;
+  backdrop-filter: blur(2px);
+}
+.letter-wrap{
+  width:min(540px, 94vw);
+  text-align:center;
+}
+.badge{
+  font-family:"Great Vibes", cursive;
+  color:white;
+  font-size: 56px;
+  margin-bottom:10px;
+  text-shadow: 0 14px 30px rgba(0,0,0,.25);
+}
+.subnote{
+  margin:12px 0 0;
+  color:rgba(255,255,255,.92);
+  opacity:.9;
+}
+
+/* Sobre */
+.envelope{
+  position:relative;
+  width:min(430px, 92vw);
+  height: 260px;
+  margin:0 auto;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,.25));
+  cursor:pointer;
+  outline:none;
+}
+.env-back{
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, var(--env), var(--env2));
+  border-radius: 20px;
+  box-shadow: 0 16px 60px var(--envShadow);
+}
+.env-front{
+  position:absolute; inset:0;
+  border-radius: 20px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.40), transparent 55%),
+    linear-gradient(180deg, rgba(0,0,0,.06), transparent 35%),
+    linear-gradient(180deg, var(--env2), var(--env));
+  clip-path: polygon(0 44%, 50% 78%, 100% 44%, 100% 100%, 0 100%);
+  opacity:.95;
+}
+.env-flap{
+  position:absolute; inset:0;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #ffeaf0, #ffd3e0);
+  clip-path: polygon(0 44%, 50% 0%, 100% 44%, 50% 78%);
+  transform-origin: 50% 44%;
+  transform: rotateX(0deg);
+  transition: transform .9s cubic-bezier(.2,.9,.2,1);
+}
+
+/* Carta */
+.letter{
+  position:absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 14px;
+  width: 86%;
+  height: 92%;
+  background: var(--paper);
+  border-radius: 18px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.18);
+  padding:18px 18px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  justify-content:center;
+  transition: transform .9s cubic-bezier(.2,.9,.2,1), opacity .5s ease;
+}
+.letter-top{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.seal-heart{
+  font-size:26px;
+}
+.letter-title{
+  font-family:"Great Vibes", cursive;
+  font-size:34px;
+  color:#c0184a;
+}
+.letter-text{
+  margin:0;
+  color: rgba(60,40,35,.75);
+}
+.btn{
+  align-self:center;
+  background:white;
+  border:none;
+  padding:11px 18px;
+  border-radius: 14px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow: 0 12px 26px rgba(0,0,0,.15);
+}
+.btn:active{ transform: translateY(1px); }
+
+/* estado abierto */
+.envelope.open .env-flap{
+  transform: rotateX(180deg);
+}
+.envelope.open .letter{
+  transform: translateX(-50%) translateY(-70px);
+}
+
+/* salida intro */
+.intro.hide{ animation: introOut .6s ease forwards; }
+@keyframes introOut{
+  to{ opacity:0; transform: scale(1.03); pointer-events:none; }
+}
+
+/* Tarjeta */
+.wrap{
+  position:relative;
+  z-index:2;
+  height:100vh;
+  display:grid;
+  place-items:center;
+  padding:22px;
+  opacity:0;
+  transform: scale(.985);
+}
+.wrap.show{ animation: wrapIn .8s cubic-bezier(.2,.9,.2,1) forwards; }
+@keyframes wrapIn{ to{ opacity:1; transform: scale(1); } }
+
+.card{
+  width:min(980px, 94vw);
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:"";
+  position:absolute; inset:-40%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.58), transparent 55%);
+  opacity:.55;
+}
+.card-inner{
+  display:grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap:18px;
+  padding:28px 26px 20px;
+  position:relative;
+}
+@media (max-width: 860px){
+  .card-inner{ grid-template-columns: 1fr; }
+}
+
+.title{
+  margin:0 0 12px;
+  font-weight:900;
+  color:var(--muted);
+}
+.name{
+  font-family:"Great Vibes", cursive;
+  font-size: 36px;
+  font-weight:400;
+  color:#c0184a;
+  margin-left:6px;
+}
+.typebox{
+  position:relative;
+  min-height: 170px;
+  padding-right:14px;
+}
+.typed{
+  margin:0;
+  font-size:20px;
+  line-height:1.6;
+  white-space:pre-wrap;
+}
+.caret{
+  display:inline-block;
+  width:10px;
+  height:22px;
+  background: rgba(90,52,45,.65);
+  border-radius:2px;
+  position:absolute;
+  margin-left:6px;
+  animation: blink .85s infinite;
+  transform: translateY(4px);
+}
+@keyframes blink{ 50%{ opacity:.12; } }
+
+.counter{ margin-top:18px; }
+.small{ margin:0; color:var(--muted); }
+.big{ margin:4px 0 0; font-size:24px; font-weight:900; }
+
+.sign{
+  margin-top:16px;
+  color:rgba(60,40,35,.65);
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.sign .firm{
+  font-family:"Great Vibes", cursive;
+  font-size: 26px;
+}
+
+.right{
+  display:grid;
+  place-items:center;
+  padding:4px 0 10px;
+}
+#tree{
+  width:min(420px, 88vw);
+  height:auto;
+  display:block;
+}
+
+.floor{
+  height:4px;
+  background: rgba(0,0,0,.65);
+  opacity:.33;
+  margin:0 22px 16px;
+  border-radius:999px;
+}
+
+/* canvases */
+.fall, .spark{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
+.fall{ z-index:1; }
+.spark{ z-index:3; }
