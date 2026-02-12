@@ -25,12 +25,8 @@
             <span class="letter-title">Una carta para ti</span>
           </div>
 
-          <p class="letter-text">
-            Toca el sobre… y luego presiona abrir ✨
-          </p>
-
+          <p class="letter-text">Toca el sobre… y luego presiona abrir ✨</p>
           <button class="btn" id="btnStart">Abrir</button>
-
           <p class="tiny">Tip: para música toca ▶︎ (en iPhone no se reproduce sola)</p>
         </div>
       </div>
@@ -79,89 +75,66 @@
         </div>
 
         <div class="right">
-          <svg id="treeSvg" viewBox="0 0 520 520" role="img" aria-label="Árbol corazón">
-  <defs>
-    <radialGradient id="crownGlow" cx="50%" cy="35%" r="70%">
-      <stop offset="0%" stop-color="#ffd1df" stop-opacity="0.95"/>
-      <stop offset="55%" stop-color="#ff4d8d" stop-opacity="0.80"/>
-      <stop offset="100%" stop-color="#c0184a" stop-opacity="0.90"/>
-    </radialGradient>
+          <!-- CORAZÓN GRANDE (responsive) -->
+          <svg id="heartSvg" viewBox="0 0 520 520" role="img" aria-label="Corazón">
+            <defs>
+              <radialGradient id="heartGrad" cx="50%" cy="38%" r="70%">
+                <stop offset="0%" stop-color="#ffd1df" stop-opacity="0.98"/>
+                <stop offset="45%" stop-color="#ff4d8d" stop-opacity="0.90"/>
+                <stop offset="100%" stop-color="#c0184a" stop-opacity="0.92"/>
+              </radialGradient>
 
-    <linearGradient id="trunkGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#8a5635"/>
-      <stop offset="100%" stop-color="#4b2718"/>
-    </linearGradient>
+              <filter id="heartShadow" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#000" flood-opacity="0.18"/>
+              </filter>
 
-    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000" flood-opacity="0.18"/>
-    </filter>
+              <filter id="heartGlow" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="3" result="b"/>
+                <feMerge>
+                  <feMergeNode in="b"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
 
-    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="2" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
+            <!-- Sombra suave (para “profundidad”) -->
+            <ellipse cx="280" cy="420" rx="170" ry="40" fill="rgba(0,0,0,.10)"/>
 
-  <!-- sombra suelo -->
-  <ellipse cx="310" cy="455" rx="170" ry="36" fill="rgba(0,0,0,.10)"/>
+            <!-- Corazón grande -->
+            <g filter="url(#heartShadow)">
+              <path id="heartPath"
+                d="M260 150
+                   C230 95 160 95 160 160
+                   C160 220 225 245 260 290
+                   C295 245 360 220 360 160
+                   C360 95 290 95 260 150Z"
+                fill="url(#heartGrad)" filter="url(#heartGlow)"/>
+            </g>
 
-  <!-- tronco -->
-  <g filter="url(#softShadow)">
-    <path d="M305 458
-             C300 405 295 365 295 325
-             C295 290 305 265 310 245"
-          fill="none" stroke="url(#trunkGrad)" stroke-width="30" stroke-linecap="round"/>
+            <!-- “pecas/rositas” decorativas -->
+            <g id="dots" opacity="0.92">
+              <circle cx="210" cy="160" r="7" fill="#ff2a6d"/>
+              <circle cx="238" cy="150" r="6" fill="#c0184a"/>
+              <circle cx="280" cy="150" r="6" fill="#ff2a6d"/>
+              <circle cx="310" cy="162" r="7" fill="#c0184a"/>
 
-    <!-- ramas -->
-    <path d="M300 325 C270 312 255 295 235 275"
-          fill="none" stroke="url(#trunkGrad)" stroke-width="14" stroke-linecap="round"/>
-    <path d="M305 325 C335 312 350 295 370 275"
-          fill="none" stroke="url(#trunkGrad)" stroke-width="14" stroke-linecap="round"/>
+              <circle cx="195" cy="190" r="6" fill="#ff4d8d"/>
+              <circle cx="225" cy="190" r="8" fill="#c0184a"/>
+              <circle cx="260" cy="190" r="6" fill="#ff2a6d"/>
+              <circle cx="295" cy="190" r="8" fill="#ff4d8d"/>
+              <circle cx="325" cy="190" r="6" fill="#c0184a"/>
 
-    <path d="M292 285 C265 275 245 258 225 240"
-          fill="none" stroke="url(#trunkGrad)" stroke-width="12" stroke-linecap="round"/>
-    <path d="M317 285 C345 275 365 258 385 240"
-          fill="none" stroke="url(#trunkGrad)" stroke-width="12" stroke-linecap="round"/>
-  </g>
+              <circle cx="210" cy="222" r="7" fill="#c0184a"/>
+              <circle cx="240" cy="230" r="6" fill="#ff2a6d"/>
+              <circle cx="260" cy="235" r="9" fill="#ff4d8d"/>
+              <circle cx="285" cy="230" r="6" fill="#ff2a6d"/>
+              <circle cx="310" cy="222" r="7" fill="#c0184a"/>
 
-  <!-- copa corazón -->
-  <g id="crown" filter="url(#softGlow)">
-    <path d="M310 140
-             C280 90 220 95 220 150
-             C220 195 265 215 310 260
-             C355 215 400 195 400 150
-             C400 95 340 90 310 140Z"
-          fill="url(#crownGlow)"/>
-
-    <!-- “rositas” -->
-    <g id="roses">
-      <circle cx="260" cy="150" r="8" fill="#ff2a6d"/>
-      <circle cx="290" cy="140" r="7" fill="#c0184a"/>
-      <circle cx="330" cy="140" r="7" fill="#ff4d8d"/>
-      <circle cx="360" cy="150" r="8" fill="#c0184a"/>
-
-      <circle cx="245" cy="175" r="7" fill="#ff4d8d"/>
-      <circle cx="275" cy="175" r="6" fill="#ff2a6d"/>
-      <circle cx="310" cy="175" r="9" fill="#c0184a"/>
-      <circle cx="345" cy="175" r="6" fill="#ff2a6d"/>
-      <circle cx="375" cy="175" r="7" fill="#ff4d8d"/>
-
-      <circle cx="260" cy="205" r="8" fill="#c0184a"/>
-      <circle cx="290" cy="205" r="7" fill="#ff2a6d"/>
-      <circle cx="310" cy="205" r="9" fill="#ff4d8d"/>
-      <circle cx="335" cy="205" r="7" fill="#ff2a6d"/>
-      <circle cx="360" cy="205" r="8" fill="#c0184a"/>
-
-      <circle cx="285" cy="230" r="7" fill="#ff2a6d"/>
-      <circle cx="310" cy="240" r="8" fill="#c0184a"/>
-      <circle cx="340" cy="230" r="7" fill="#ff4d8d"/>
-      <circle cx="310" cy="255" r="6" fill="#ff2a6d"/>
-    </g>
-  </g>
-</svg>
+              <circle cx="240" cy="260" r="6" fill="#ff2a6d"/>
+              <circle cx="260" cy="268" r="7" fill="#c0184a"/>
+              <circle cx="282" cy="260" r="6" fill="#ff4d8d"/>
+            </g>
+          </svg>
         </div>
       </div>
 
@@ -197,7 +170,7 @@
       <div class="final-card" role="dialog" aria-modal="true" aria-label="Sorpresa final">
         <div class="final-top">
           <div class="lock">
-            <div class="lock-body" id="chestBody">🧰</div>
+            <div class="lock-body" id="chestBody">🎁</div>
             <button class="key-btn" id="keyBtn" aria-label="Usar la llave">
               <span class="key">🗝️</span>
               <span class="key-heart">❤</span>
@@ -226,4 +199,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
