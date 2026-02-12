@@ -561,4 +561,4 @@ body{
 [hidden] { 
   display: none !important; 
 }
-
+.caret{ display:none !important; }
