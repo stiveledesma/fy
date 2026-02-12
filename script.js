@@ -506,13 +506,13 @@ const modalClose = document.getElementById("modalClose");
 const modalBackdrop = document.getElementById("modalBackdrop");
 
 function closeModal(){
+  modalImg.removeAttribute("src"); // evita ícono roto
   modal.hidden = true;
-  modalImg.removeAttribute("src");
 }
+
 
 modalClose.addEventListener("click", closeModal);
 modalBackdrop.addEventListener("click", closeModal);
-
 // Si el modal intenta cargar algo roto, cerramos
 modalImg.addEventListener("error", closeModal);
 

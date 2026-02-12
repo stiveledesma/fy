@@ -557,3 +557,8 @@ body{
   position:absolute;
   z-index:10001 !important;
 }
+/* FIX CRÍTICO: respeta el atributo hidden aunque exista display:grid */
+[hidden] { 
+  display: none !important; 
+}
+
