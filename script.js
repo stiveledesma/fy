@@ -75,7 +75,6 @@ function start(){
   startCounter();
   startFallingHearts();
   startSparkleLoop();
-  drawHeartRoseTree();
 
   // P.D. al final + mostrar cofre
   const approxMs = estimateTypingMs(SCENES, 18, 650);
@@ -697,3 +696,4 @@ finalNo.addEventListener("click", () => {
   finalNo.style.transform = `translate(${(Math.random()*80-40).toFixed(0)}px, ${(Math.random()*50-25).toFixed(0)}px)`;
   setTimeout(()=> finalNo.style.transform = "", 500);
 });
+
