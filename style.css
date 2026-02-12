@@ -273,27 +273,31 @@ body{
   padding:4px 0 10px;
 }
 #heartSvg{
-  width: min(460px, 92vw);
+  width: min(520px, 92vw);
   max-width: 100%;
   height: auto;
   display:block;
-  transform-origin: 50% 70%;
-  animation: heartSway 3.2s ease-in-out infinite;
-}
-#heartPath{ animation: heartPulse 2.4s ease-in-out infinite; transform-origin: 50% 45%; }
-#dots circle{ animation: twinkle 2.2s ease-in-out infinite; }
-#dots circle:nth-child(3n){ animation-delay: .25s; }
-#dots circle:nth-child(4n){ animation-delay: .5s; }
 
-@keyframes heartSway{
-  50%{ transform: rotate(0.6deg) translateY(-1px); }
+  /* sensación “premium” */
+  transform-origin: 50% 70%;
+  animation: heartFloat 3.6s ease-in-out infinite;
+  will-change: transform;
 }
-@keyframes heartPulse{
-  50%{ transform: scale(1.03); }
+
+#heartSvg g { transform-origin: 50% 50%; }
+
+@keyframes heartFloat{
+  50%{ transform: translateY(-4px) rotate(0.4deg); }
 }
-@keyframes twinkle{
-  50%{ transform: scale(1.12); opacity:.92; }
+
+/* Respira un poquito el brillo (sin exagerar) */
+#heartSvg use[href="#heartShape"]{
+  animation: heartBreath 2.8s ease-in-out infinite;
 }
+@keyframes heartBreath{
+  50%{ opacity: 0.985; }
+}
+
 
 .floor{
   height:4px;
@@ -470,3 +474,4 @@ body{
   60%{ transform: translateY(2px) rotate(6deg); }
   to{ transform: translateY(0) rotate(0deg); }
 }
+
