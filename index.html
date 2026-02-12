@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Para Silvia ❤️</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -31,7 +31,7 @@
 
           <button class="btn" id="btnStart">Abrir</button>
 
-          <p class="tiny">Tip: cuando abra, dale ▶︎ para música</p>
+          <p class="tiny">Tip: para música toca ▶︎ (en iPhone no se reproduce sola)</p>
         </div>
       </div>
 
@@ -48,10 +48,9 @@
           <span class="music-label" id="musicLabel">Música</span>
         </div>
 
-        <!-- Mini galería: sube tus fotos a /assets/foto1.jpg y /assets/foto2.jpg -->
         <div class="mini-gallery" aria-label="Fotos">
-          <img class="mini" src="assets/foto1.jpg" alt="Foto 1" loading="lazy" />
-          <img class="mini" src="assets/foto2.jpg" alt="Foto 2" loading="lazy" />
+          <img class="mini" src="assets/foto1.jpg" alt="Foto 1" loading="eager" />
+          <img class="mini" src="assets/foto2.jpg" alt="Foto 2" loading="eager" />
         </div>
       </div>
 
@@ -59,9 +58,8 @@
         <div class="left">
           <p class="title">Para el amor de mi vida, <span class="name">Silvia</span>:</p>
 
-          <div class="typebox">
+          <div class="typebox" aria-label="Carta">
             <p id="typed" class="typed"></p>
-            <span class="caret" aria-hidden="true"></span>
           </div>
 
           <div class="counter">
@@ -81,35 +79,36 @@
         </div>
 
         <div class="right">
-          <canvas id="tree" width="520" height="520"></canvas>
+          <canvas id="tree" width="520" height="520" aria-label="Árbol de rosas"></canvas>
         </div>
       </div>
 
       <div class="floor"></div>
     </section>
 
+    <!-- canvases decorativos -->
     <canvas id="fall" class="fall"></canvas>
     <canvas id="spark" class="spark"></canvas>
 
-    <!-- Audio: sube tu mp3 a /assets/music.mp3 -->
+    <!-- Audio -->
     <audio id="bgMusic" preload="auto" loop>
       <source src="assets/music.mp3" type="audio/mpeg" />
     </audio>
 
-    <!-- Modal para ver fotos grandes -->
+    <!-- Modal fotos -->
     <div class="modal" id="modal" hidden>
       <div class="modal-backdrop" id="modalBackdrop"></div>
       <img class="modal-img" id="modalImg" alt="Foto" />
       <button class="modal-close" id="modalClose" aria-label="Cerrar">×</button>
     </div>
 
-    <!-- Botón final (COFRE) -->
+    <!-- Botón final (cofre) -->
     <button class="final-btn" id="finalBtn" hidden aria-label="Abrir sorpresa final">
       <span class="final-icon">🎁</span>
       <span class="final-text">Cofre</span>
     </button>
 
-    <!-- Modal final: ¿Quieres ser mi San Valentín? -->
+    <!-- Modal final -->
     <div class="final-modal" id="finalModal" hidden>
       <div class="final-backdrop" id="finalBackdrop"></div>
 
@@ -139,6 +138,7 @@
         <button class="final-close" id="finalClose" aria-label="Cerrar">×</button>
       </div>
     </div>
+
   </main>
 
   <script src="script.js"></script>
